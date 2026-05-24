@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- =============================================
+       Weather App - index.html
+       Author: Weather App Project
+       Description: Main HTML structure for the Weather App
+       ============================================= -->
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Real-time Weather App - Get current weather conditions, temperature, humidity and wind speed for any city worldwide." />
+  <meta name="keywords" content="weather app, real-time weather, temperature, humidity, wind speed" />
+  <meta name="author" content="Weather App Project" />
+
+  <!-- Open Graph / Social Sharing -->
+  <meta property="og:title" content="WeatherNow - Real-Time Weather App" />
+  <meta property="og:description" content="Get instant weather updates for any city around the world." />
+  <meta property="og:type" content="website" />
+
+  <title>WeatherNow 🌤️ - Real-Time Weather App</title>
+
+  <!-- Link to our external CSS file -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Google Fonts: Inter for modern typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
+  <!-- =============================================
+       MAIN APP CONTAINER
+       The entire app lives inside this wrapper
+       ============================================= -->
+  <div class="app-wrapper">
+
+    <!-- Animated background blobs for visual depth -->
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+
+    <!-- =============================================
+         MAIN CARD
+         The glass-morphism card that holds everything
+         ============================================= -->
+    <div class="weather-card" id="weatherCard">
+
+      <!-- ---- APP HEADER ---- -->
+      <div class="app-header">
+        <div class="logo">
+          <span class="logo-icon">🌤️</span>
+          <span class="logo-text">WeatherNow</span>
+        </div>
+        <p class="tagline">Real-time weather at your fingertips</p>
+      </div>
+
+      <!-- ---- SEARCH SECTION ---- -->
+      <div class="search-section">
+        <div class="search-box">
+          <!-- City name input field -->
+          <input
+            type="text"
+            id="cityInput"
+            class="city-input"
+            placeholder="Search for a city..."
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Enter city name"
+          />
+          <!-- Search button triggers weather fetch -->
+          <button id="searchBtn" class="search-btn" aria-label="Search weather">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ---- LOADING SPINNER (hidden by default) ---- -->
+      <!-- Shown while API data is being fetched -->
+      <div class="loading-container" id="loadingContainer">
+        <div class="spinner"></div>
+        <p class="loading-text">Fetching weather data...</p>
+      </div>
+
+      <!-- ---- ERROR MESSAGE (hidden by default) ---- -->
+      <!-- Shown when the city is not found or API fails -->
+      <div class="error-container" id="errorContainer">
+        <div class="error-icon">🌧️</div>
+        <p class="error-title">Oops! City not found</p>
+        <p class="error-message" id="errorMessage">Please check the city name and try again.</p>
+      </div>
+
+      <!-- ---- WEATHER RESULT SECTION (hidden by default) ---- -->
+      <!-- Shown after successful API response -->
+      <div class="weather-result" id="weatherResult">
+
+        <!-- City Name & Country -->
+        <div class="city-info">
+          <h1 class="city-name" id="cityName">--</h1>
+          <p class="country" id="countryName">--</p>
+          <p class="weather-date" id="weatherDate">--</p>
+        </div>
+
+        <!-- Weather Icon & Main Temperature -->
+        <div class="main-weather">
+          <!-- Icon from OpenWeatherMap -->
+          <img
+            src=""
+            alt="Weather icon"
+            id="weatherIcon"
+            class="weather-icon"
+          />
+          <!-- Main temperature display -->
+          <div class="temperature-block">
+            <span class="temperature" id="temperature">--</span>
+            <span class="unit">°C</span>
+          </div>
+        </div>
+
+        <!-- Weather Description (e.g., "Partly Cloudy") -->
+        <p class="weather-description" id="weatherDescription">--</p>
+
+        <!-- ---- STATS GRID: Humidity, Wind, Feels Like, Visibility ---- -->
+        <div class="stats-grid">
+
+          <!-- Humidity Card -->
+          <div class="stat-card" id="humidityCard">
+            <div class="stat-icon">💧</div>
+            <div class="stat-info">
+              <span class="stat-value" id="humidity">--%</span>
+              <span class="stat-label">Humidity</span>
+            </div>
+          </div>
+
+          <!-- Wind Speed Card -->
+          <div class="stat-card" id="windCard">
+            <div class="stat-icon">💨</div>
+            <div class="stat-info">
+              <span class="stat-value" id="windSpeed">-- km/h</span>
+              <span class="stat-label">Wind Speed</span>
+            </div>
+          </div>
+
+          <!-- Feels Like Card -->
+          <div class="stat-card" id="feelsLikeCard">
+            <div class="stat-icon">🌡️</div>
+            <div class="stat-info">
+              <span class="stat-value" id="feelsLike">--°C</span>
+              <span class="stat-label">Feels Like</span>
+            </div>
+          </div>
+
+          <!-- Visibility Card -->
+          <div class="stat-card" id="visibilityCard">
+            <div class="stat-icon">👁️</div>
+            <div class="stat-info">
+              <span class="stat-value" id="visibility">-- km</span>
+              <span class="stat-label">Visibility</span>
+            </div>
+          </div>
+
+        </div>
+        <!-- END stats-grid -->
+
+      </div>
+      <!-- END weather-result -->
+
+      <!-- ---- DEFAULT / WELCOME SCREEN ---- -->
+      <!-- Shown on first load before any search -->
+      <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-illustration">🌍</div>
+        <p class="welcome-title">Explore Global Weather</p>
+        <p class="welcome-subtitle">Type a city name above and press Enter or click search</p>
+      </div>
+
+    </div>
+    <!-- END weather-card -->
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Powered by <a href="https://openweathermap.org/" target="_blank" rel="noopener noreferrer">OpenWeather API</a></p>
+    </footer>
+
+  </div>
+  <!-- END app-wrapper -->
+
+  <!-- Link to our external JavaScript file (placed at the end of body for performance) -->
+  <script src="script.js"></script>
+
+</body>
+</html>

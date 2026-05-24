@@ -1,0 +1,701 @@
+/* ==============================================
+   Weather App - style.css
+   Author: Weather App Project
+   Description: All styles for the Weather App
+   Uses: CSS Variables, Glassmorphism, Animations
+   ============================================== */
+
+/* ---- CSS VARIABLES (Design Tokens) ---- */
+/* These make it easy to change colors/sizes in one place */
+:root {
+  /* Color Palette */
+  --gradient-start: #0f0c29;
+  --gradient-mid:   #302b63;
+  --gradient-end:   #24243e;
+
+  --glass-bg:        rgba(255, 255, 255, 0.10);
+  --glass-border:    rgba(255, 255, 255, 0.18);
+  --glass-shadow:    rgba(0, 0, 0, 0.37);
+
+  --color-white:     #ffffff;
+  --color-white-70:  rgba(255, 255, 255, 0.70);
+  --color-white-50:  rgba(255, 255, 255, 0.50);
+  --color-white-20:  rgba(255, 255, 255, 0.20);
+  --color-white-10:  rgba(255, 255, 255, 0.10);
+
+  --accent-blue:     #6c63ff;
+  --accent-purple:   #a855f7;
+  --accent-cyan:     #06b6d4;
+  --accent-pink:     #ec4899;
+
+  --error-color:     #f87171;
+  --error-bg:        rgba(248, 113, 113, 0.15);
+
+  /* Typography */
+  --font-family:     'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Spacing */
+  --radius-sm:  8px;
+  --radius-md:  16px;
+  --radius-lg:  24px;
+  --radius-xl:  32px;
+
+  /* Transitions */
+  --transition-fast:   0.2s ease;
+  --transition-smooth: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+
+/* ---- RESET & BASE STYLES ---- */
+/* Remove default browser styles */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  /* Deep space gradient background */
+  background: linear-gradient(
+    135deg,
+    var(--gradient-start) 0%,
+    var(--gradient-mid) 50%,
+    var(--gradient-end) 100%
+  );
+  background-attachment: fixed;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: var(--color-white);
+}
+
+
+/* =============================================
+   ANIMATED BACKGROUND BLOBS
+   These floating circles add visual depth
+   ============================================= */
+.app-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Base blob style */
+.bg-blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  animation: blobFloat 8s ease-in-out infinite alternate;
+  pointer-events: none;  /* blobs should not block clicks */
+  z-index: 0;
+}
+
+/* Individual blob colors and positions */
+.blob-1 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--accent-blue), transparent);
+  top: -100px;
+  left: -100px;
+  animation-duration: 7s;
+}
+
+.blob-2 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--accent-purple), transparent);
+  bottom: -150px;
+  right: -100px;
+  animation-duration: 9s;
+  animation-delay: -3s;
+}
+
+.blob-3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, var(--accent-cyan), transparent);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-duration: 11s;
+  animation-delay: -6s;
+}
+
+/* Blob floating animation */
+@keyframes blobFloat {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(30px, 50px) scale(1.1); }
+}
+
+.blob-3 {
+  animation-name: blobFloatCenter;
+}
+
+@keyframes blobFloatCenter {
+  0%   { transform: translate(-50%, -50%) scale(1); }
+  100% { transform: translate(calc(-50% + 40px), calc(-50% + 30px)) scale(1.15); }
+}
+
+
+/* =============================================
+   WEATHER CARD (Glass-morphism effect)
+   ============================================= */
+.weather-card {
+  position: relative;
+  z-index: 1;                       /* above background blobs */
+  width: 100%;
+  max-width: 480px;
+  padding: 36px 32px;
+  border-radius: var(--radius-xl);
+
+  /* The glass effect: semi-transparent + blur */
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);   /* Safari support */
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 32px 64px var(--glass-shadow),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+
+  /* Smooth entrance animation */
+  animation: cardEntrance 0.8s var(--transition-smooth);
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* =============================================
+   APP HEADER
+   ============================================= */
+.app-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.logo-icon {
+  font-size: 2rem;
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+/* Subtle pulse animation on the logo icon */
+@keyframes iconPulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.1); }
+}
+
+.logo-text {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+
+  /* Gradient text effect */
+  background: linear-gradient(135deg, #fff 0%, var(--accent-cyan) 50%, var(--accent-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tagline {
+  font-size: 0.85rem;
+  color: var(--color-white-50);
+  font-weight: 400;
+}
+
+
+/* =============================================
+   SEARCH SECTION
+   ============================================= */
+.search-section {
+  margin-bottom: 24px;
+}
+
+.search-box {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Input field styling */
+.city-input {
+  flex: 1;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  background: var(--color-white-10);
+  color: var(--color-white);
+  font-size: 1rem;
+  font-family: var(--font-family);
+  font-weight: 500;
+  outline: none;
+  transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+/* Placeholder text color */
+.city-input::placeholder {
+  color: var(--color-white-50);
+  font-weight: 400;
+}
+
+/* Focused input: highlight with cyan glow */
+.city-input:focus {
+  border-color: var(--accent-cyan);
+  background: rgba(6, 182, 212, 0.10);
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.20);
+}
+
+/* Search button */
+.search-btn {
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  color: var(--color-white);
+  font-size: 1rem;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
+
+  /* Purple-to-cyan gradient button */
+  background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%);
+  box-shadow: 0 4px 20px rgba(108, 99, 255, 0.4);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Button hover effect */
+.search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(108, 99, 255, 0.6);
+}
+
+/* Button click effect */
+.search-btn:active {
+  transform: translateY(0);
+  opacity: 0.9;
+}
+
+
+/* =============================================
+   LOADING SPINNER
+   ============================================= */
+.loading-container {
+  display: none;        /* Hidden by default; shown via JavaScript */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  gap: 16px;
+}
+
+/* When JS adds class 'visible', show the loader */
+.loading-container.visible {
+  display: flex;
+}
+
+/* Animated ring spinner */
+.spinner {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 4px solid var(--color-white-20);
+  border-top-color: var(--accent-cyan);
+  border-right-color: var(--accent-purple);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 0.9rem;
+  color: var(--color-white-70);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+
+  /* Blinking text animation */
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+
+/* =============================================
+   ERROR CONTAINER
+   ============================================= */
+.error-container {
+  display: none;        /* Hidden by default; shown via JavaScript */
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 32px 16px;
+  gap: 10px;
+
+  background: var(--error-bg);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: var(--radius-lg);
+
+  /* Shake entrance animation */
+  animation: shakeIn 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+.error-container.visible {
+  display: flex;
+}
+
+@keyframes shakeIn {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-8px); }
+  40%       { transform: translateX(8px); }
+  60%       { transform: translateX(-5px); }
+  80%       { transform: translateX(5px); }
+}
+
+.error-icon {
+  font-size: 3rem;
+  margin-bottom: 4px;
+}
+
+.error-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--error-color);
+}
+
+.error-message {
+  font-size: 0.875rem;
+  color: var(--color-white-70);
+}
+
+
+/* =============================================
+   WEATHER RESULT SECTION
+   ============================================= */
+.weather-result {
+  display: none;        /* Hidden by default; shown via JavaScript */
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  /* Fade-in from below when shown */
+  animation: fadeSlideUp 0.5s var(--transition-smooth);
+}
+
+.weather-result.visible {
+  display: flex;
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* City name and country */
+.city-info {
+  text-align: center;
+}
+
+.city-name {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+.country {
+  font-size: 0.9rem;
+  color: var(--color-white-70);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.weather-date {
+  font-size: 0.8rem;
+  color: var(--color-white-50);
+  margin-top: 2px;
+}
+
+/* Main weather section: icon + temperature side by side */
+.main-weather {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Weather icon from OpenWeatherMap */
+.weather-icon {
+  width: 96px;
+  height: 96px;
+  filter: drop-shadow(0 4px 16px rgba(6, 182, 212, 0.5));
+  animation: iconBob 3s ease-in-out infinite;
+}
+
+/* Gentle floating animation for the icon */
+@keyframes iconBob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* Temperature display */
+.temperature-block {
+  display: flex;
+  align-items: flex-start;
+}
+
+.temperature {
+  font-size: 5rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -3px;
+
+  /* Gradient text */
+  background: linear-gradient(135deg, #fff 0%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.unit {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-top: 8px;
+  color: var(--color-white-70);
+}
+
+/* Weather condition text (e.g., "Partly Cloudy") */
+.weather-description {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--color-white-70);
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  padding: 6px 18px;
+  background: var(--color-white-10);
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+}
+
+
+/* =============================================
+   STATS GRID (Humidity, Wind, Feels Like, Visibility)
+   ============================================= */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;    /* 2 columns */
+  gap: 12px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* Individual stat card */
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  background: var(--color-white-10);
+  border: 1px solid var(--glass-border);
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+
+/* Hover: lift the card slightly */
+.stat-card:hover {
+  transform: translateY(-3px);
+  background: var(--color-white-20);
+}
+
+.stat-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-white);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--color-white-50);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+
+/* =============================================
+   WELCOME / DEFAULT SCREEN
+   ============================================= */
+.welcome-screen {
+  display: flex;       /* Visible on first load */
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 40px 16px;
+  gap: 12px;
+}
+
+/* Hidden when JS adds 'hidden' class */
+.welcome-screen.hidden {
+  display: none;
+}
+
+.welcome-illustration {
+  font-size: 5rem;
+  animation: globeSpin 4s linear infinite;
+  display: inline-block;
+}
+
+@keyframes globeSpin {
+  0%   { transform: rotate(0deg) scale(1); }
+  25%  { transform: rotate(5deg) scale(1.05); }
+  75%  { transform: rotate(-5deg) scale(0.95); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+.welcome-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-white);
+}
+
+.welcome-subtitle {
+  font-size: 0.875rem;
+  color: var(--color-white-50);
+  max-width: 260px;
+  line-height: 1.6;
+}
+
+
+/* =============================================
+   FOOTER
+   ============================================= */
+.app-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--color-white-50);
+}
+
+.app-footer a {
+  color: var(--accent-cyan);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.app-footer a:hover {
+  color: var(--color-white);
+  text-decoration: underline;
+}
+
+
+/* =============================================
+   RESPONSIVE DESIGN
+   Makes the app look great on smaller screens
+   ============================================= */
+@media (max-width: 520px) {
+  .weather-card {
+    padding: 28px 20px;
+    border-radius: var(--radius-lg);
+  }
+
+  .logo-text {
+    font-size: 1.5rem;
+  }
+
+  .temperature {
+    font-size: 4rem;
+  }
+
+  .city-name {
+    font-size: 1.6rem;
+  }
+
+  .weather-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  .stats-grid {
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .stat-icon {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 360px) {
+  body {
+    padding: 12px;
+  }
+
+  .temperature {
+    font-size: 3.2rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr; /* Single column on very small screens */
+  }
+}
